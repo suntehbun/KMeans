@@ -1,0 +1,35 @@
+'''
+Sunny Yeung
+CPSC 5610
+This is a k-means algorithm for AI Class
+Spring 2018
+cluster the dataset based on 3rd, 4th, and 5th attributes (compactness, length, and width
+'''
+
+
+def getdata(arr):
+    path = 'seeds_dataset.txt'
+    data = open(path, 'r')
+    # print(data.read())
+
+    for line in data:
+        i = 1
+        features = []
+        for x in line.split():
+            if i == 3 or i == 4 or i == 5:
+            # try:
+                y = float(x)
+                features.append(y)
+            # except ValueError:
+            #    print('error on ', i)
+            i+=1
+
+        arr.append(features)
+        i += 1
+
+
+data = []
+getdata(data)
+
+# pick k as 4
+
