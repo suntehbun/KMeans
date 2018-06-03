@@ -100,7 +100,6 @@ cluster3 = []
 
 cent = [centroid1, centroid2, centroid3]
 while not end:
-
     for x in range(len(data)):
         total1, total2, total3 = 0, 0, 0
         for y in range(len(cent)):
@@ -129,18 +128,6 @@ while not end:
         cluster1 = []
         cluster2 = []
         cluster3 = []
-        for x in range(len(data)):
-            total1, total2, total3 = 0, 0, 0
-            for y in range(len(cent)):
-                total1 += math.pow(newcent[0][y]-data[x][y], 2)
-                total2 += math.pow(newcent[1][y]-data[x][y], 2)
-                total3 += math.pow(newcent[2][y] - data[x][y], 2)
-            if total1 < total2 and total1 < total3:
-                cluster1.append(data[x])
-            elif total2 < total1 and total2 < total3:
-                cluster2.append(data[x])
-            elif total3 < total1 and total3 < total2:
-                cluster3.append(data[x])
         cent=newcent
 
 print('cluster 1 size:', len(cluster1), cent[0])
