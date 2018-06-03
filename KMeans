@@ -6,6 +6,8 @@ Spring 2018
 cluster the dataset based on 3rd, 4th, and 5th attributes (compactness, length, and width
 '''
 
+import random
+
 
 def getdata(arr):
     path = 'seeds_dataset.txt'
@@ -28,8 +30,51 @@ def getdata(arr):
         i += 1
 
 
+def findmin(arr, feature):
+    n = len(arr)
+    small = arr[0][feature]
+    for x in range(n):
+        if small > arr[x][feature]:
+            small = arr[x][feature]
+    return small
+
+
+def findmax(arr, feature):
+    n = len(arr)
+    big = arr[0][feature]
+    for x in range(n):
+        if big < arr[x][feature]:
+            big = arr[x][feature]
+    return big
+
+
+def initializecentroid(arr, minx, maxx, miny, maxy, minz, maxz):
+    compactmean = random.uniform(minx, maxx)
+    lengthmean = random.uniform(miny, maxy)
+    widthmean = random.uniform(minz, maxz)
+    arr.append(compactmean)
+    arr.append(lengthmean)
+    arr.append(widthmean)
+
+
 data = []
 getdata(data)
+# feature 0 = compact, 1 = length, 2 = width
+cmin = findmin(data, 0)
+cmax = findmax(data, 0)
+lmin = findmin(data, 1)
+lmax = findmax(data, 1)
+wmin = findmin(data, 2)
+wmax = findmax(data, 2)
+# print(compactmin, compactmax, lengthmin, lengthmax, widthmin, widthmax)
 
-# pick k as 4
+# pick k as 3
+# primary initialize points is random but need to know range
+centroid1 = []
+centroid2 = []
+centroid3 = []
+initializecentroid(centroid1, cmin, cmax, lmin, lmax, wmin, wmax)
+initializecentroid(centroid2, cmin, cmax, lmin, lmax, wmin, wmax)
+initializecentroid(centroid3, cmin, cmax, lmin, lmax, wmin, wmax)
+print(centroid1)
 
