@@ -7,6 +7,7 @@ cluster the dataset based on 3rd, 4th, and 5th attributes (compactness, length, 
 '''
 
 import random
+import math
 
 
 def getdata(arr):
@@ -57,6 +58,22 @@ def initializecentroid(arr, minx, maxx, miny, maxy, minz, maxz):
     arr.append(widthmean)
 
 
+def calculatemean(arr):
+    xtotal = 0
+    ytotal = 0
+    ztotal = 0
+    for x in range(len(arr)):
+        xtotal += arr[x][0]
+        ytotal += arr[x][1]
+        ztotal += arr[x][2]
+    size = len(arr)
+    xmean = xtotal / size
+    ymean = ytotal / size
+    zmean = ztotal / size
+    return xmean, ymean, zmean
+
+
+end = False
 data = []
 getdata(data)
 # feature 0 = compact, 1 = length, 2 = width
@@ -76,5 +93,56 @@ centroid3 = []
 initializecentroid(centroid1, cmin, cmax, lmin, lmax, wmin, wmax)
 initializecentroid(centroid2, cmin, cmax, lmin, lmax, wmin, wmax)
 initializecentroid(centroid3, cmin, cmax, lmin, lmax, wmin, wmax)
-print(centroid1)
 
+cluster1 = []
+cluster2 = []
+cluster3 = []
+
+cent = [centroid1, centroid2, centroid3]
+while not end:
+
+    for x in range(len(data)):
+        total1, total2, total3 = 0, 0, 0
+        for y in range(len(cent)):
+            total1 += math.pow(cent[0][y]-data[x][y], 2)
+            total2 += math.pow(cent[1][y]-data[x][y], 2)
+            total3 += math.pow(cent[2][y] - data[x][y], 2)
+        if total1 < total2 and total1 < total3:
+            cluster1.append(data[x])
+        elif total2 < total1 and total2 < total3:
+            cluster2.append(data[x])
+        elif total3 < total1 and total3 < total2:
+            cluster3.append(data[x])
+    newcent = []
+
+    xmean, ymean, zmean = calculatemean(cluster1)
+    newcent.append([xmean, ymean, zmean])
+    xmean, ymean, zmean = calculatemean(cluster2)
+    newcent.append([xmean, ymean, zmean])
+    xmean, ymean, zmean = calculatemean(cluster3)
+    newcent.append([xmean, ymean, zmean])
+
+    if cent == newcent:
+        end = True
+        print('test', end)
+    else:
+        cluster1 = []
+        cluster2 = []
+        cluster3 = []
+        for x in range(len(data)):
+            total1, total2, total3 = 0, 0, 0
+            for y in range(len(cent)):
+                total1 += math.pow(newcent[0][y]-data[x][y], 2)
+                total2 += math.pow(newcent[1][y]-data[x][y], 2)
+                total3 += math.pow(newcent[2][y] - data[x][y], 2)
+            if total1 < total2 and total1 < total3:
+                cluster1.append(data[x])
+            elif total2 < total1 and total2 < total3:
+                cluster2.append(data[x])
+            elif total3 < total1 and total3 < total2:
+                cluster3.append(data[x])
+        cent=newcent
+
+print('cluster 1 size:', len(cluster1), cent[0])
+print('cluster 2 size:', len(cluster2), cent[1])
+print('cluster 3 size:', len(cluster3), cent[2])
